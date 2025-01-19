@@ -2,6 +2,7 @@ package com.awss3service.aws_s3_service.Service;
 
 import com.awss3service.aws_s3_service.Entity.ImageEntity;
 import com.awss3service.aws_s3_service.Repository.ImageRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,8 +15,10 @@ import java.io.IOException;
 @Service
 public class ImageService implements ImageServiceImpl {
 
+
     private final ImageRepository imageRepository;
 
+    @Autowired
     private S3Client s3Client;
 
     @Value("${aws.s3.bucket-name}")
@@ -38,9 +41,12 @@ public class ImageService implements ImageServiceImpl {
             s3Client.putObject(putObjectRequest, RequestBody.fromBytes(file.getBytes()));
 
             String url = String.format("http://%s.s3.amazonaws.com/%s", bucketName, originalFilename);
+
             ImageEntity imageEntity = new ImageEntity();
             imageEntity.setImageName(originalFilename);
             imageEntity.setImageUrl(url);
+            imageRepository.save(imageEntity);
+
             return url;
         } catch (Exception e) {
             throw new IOException("Something Went wrong");
