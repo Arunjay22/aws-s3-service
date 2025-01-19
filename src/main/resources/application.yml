@@ -1,5 +1,13 @@
 server:
   port: 8081
+  #AWS S3 Bucket properties
+aws:
+  s3:
+    accessKey:
+    secretKey:
+    region:
+    bucket-name:
+#MySql DataBase properties
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/image_entity
