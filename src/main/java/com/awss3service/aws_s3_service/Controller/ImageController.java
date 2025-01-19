@@ -26,4 +26,6 @@ public class ImageController {
             return ResponseEntity.badRequest().body("Failed to upload file: " + e.getMessage());
         }
     }
+
+
 }
